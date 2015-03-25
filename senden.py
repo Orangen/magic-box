@@ -6,6 +6,7 @@ import RPi.GPIO as GPIO
 from subprocess import Popen
 from autobahn.twisted.websocket import WebSocketClientProtocol
 
+# verbindungs protokoll zum server
 class SendenClientProtocol(WebSocketClientProtocol):
 
   def onOpen(self):
@@ -89,10 +90,10 @@ if __name__ == '__main__':
 
   from twisted.python import log
   from twisted.internet import reactor
+  from autobahn.twisted.websocket import WebSocketServerFactory, connectWS
   
   log.startLogging(sys.stdout)
 
-  from autobahn.twisted.websocket import WebSocketServerFactory, connectWS
   factory = WebSocketServerFactory("ws://109.239.57.147:9910", debug=False)
   factory.protocol = SendenClientProtocol
   connectWS(factory)
