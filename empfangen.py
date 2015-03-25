@@ -1,76 +1,75 @@
 import time
-import cups
+import json
 import binaryhelper
-# import RPi.GPIO as GPIO
+import ButtonListeners
+import threading
+import sys
+import RPi.GPIO as GPIO
 from subprocess import Popen
+from twisted.python import log
+from twisted.internet import reactor
+from subprocess import Popen
+from autobahn.twisted.websocket import WebSocketClientProtocol
+from autobahn.twisted.websocket import WebSocketClientProtocol, \
+    WebSocketClientFactory
+
+# verbindungs protokoll zum server
+class ReceiverClientProtocol(WebSocketClientProtocol):
+
+    def onOpen(self):
+        payload = {"name": "receiverBox", "group": "magic-box"}
+        self.listener = ButtonListeners.ButtonListenerReceiverThread(self)
+        self.listener.daemon = True;
+        self.listener.start()
 
 
-# RPi.GPIO Layout verwenden (wie Pin-Nummern)
-GPIO.setmode(GPIO.BOARD)
-
-# Pins auf Output setzen
-GPIO.setup(11, GPIO.OUT)
-
-# Pins auf Input setzen
-GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(19, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-
-# Variaben 
-prev_input_18 = 0
-prev_input_19 = 0
-prev_input_21 = 0
-prev_input_22 = 0
-
-imageName = "image.jpg"
-
-# endlos schleife
-while True:
-  
-  input_18 = GPIO.input(18)
-  input_19 = GPIO.input(19)
-  input_21 = GPIO.input(21)
-  input_22 = GPIO.input(22)
-
-#verbindung
-  connection, client_address = sock.accept()
-  data = connection.recv(16)
-
-  if data:
-    # json zu bild
-    json_to_file(data, imageName)
-    # Bild drucken
-    Popen(["lp",imageName])
-    
-    time.sleep(0.1)
-    GPIO.output(11, GPIO.HIGH) #signalleuchte an    
+    def onMessage(self, payload, isBinary):
+        if isBinary:
+            print("Binary message received: {0} bytes".format(len(payload)))
+        else:
+            json_dict = json.loads(payload)
+            binaryhelper.json_to_file(payload, "test.jpg")
+            if json_dict.get("data",None) is not None:
+                print "Received Data image"
+                binaryhelper.dict_to_file(json_dict, "test.jpg")
+                Control.printImage("image.jpg")
+                
+            if json_dict.get("icons",None) is not None:
+                print "Received Data"
+                showIcons(json_dict.get("icons",None))
 
 
-  if ((not prev_input_18) and input_18):
-    #info senden
-    time.sleep(0.05)
-    GPIO.output(11, GPIO.LOW) #signalleuchte aus
-    
-  if ((not prev_input_19) and input_19):
-    #info senden
-    time.sleep(0.05)
-    GPIO.output(11, GPIO.LOW) #signalleuchte aus
-   
-  if ((not prev_input_21) and input_21):
-    #info senden
-    time.sleep(0.05)
-    GPIO.output(11, GPIO.LOW) #signalleuchte aus
-   
-  if ((not prev_input_22) and input_22):
-    #info senden
-    time.sleep(0.05)
-    GPIO.output(11, GPIO.LOW) #signalleuchte aus
+    def sendIcon(self, icon):
+        print "send icons"
+        self.sendMessage(icon)
 
-     
 
-  prev_input_18 = input_18
-  prev_input_19 = input_19
-  prev_input_21 = input_21
-  prev_input_22 = input_22
-  time.sleep(0.05)
+
+class Control():
+
+    # RPi.GPIO Layout verwenden (wie Pin-Nummern)
+    GPIO.setmode(GPIO.BOARD)
+    # Pins auf Output setzen
+    GPIO.setup(11, GPIO.OUT)
+
+
+    def printImage(self, imageName):
+        # Bild drucken
+        Popen(["lp", imageName])
+        print "Received Data image"
+        time.sleep(0.1)
+        # signalleuchte an
+        GPIO.output(11, GPIO.HIGH) 
+
+
+
+
+if __name__ == '__main__':
+
+    log.startLogging(sys.stdout)
+
+    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=False)
+    factory.protocol = ReceiverClientProtocol
+
+    reactor.connectTCP("109.239.57.147", 9910, factory)
+    reactor.run()

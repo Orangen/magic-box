@@ -3,6 +3,9 @@ import json
 import binaryhelper
 import ButtonListeners
 import threading
+import sys
+from twisted.python import log
+from twisted.internet import reactor
 from subprocess import Popen
 from autobahn.twisted.websocket import WebSocketClientProtocol
 from autobahn.twisted.websocket import WebSocketClientProtocol, \
@@ -31,14 +34,8 @@ class SendenClientProtocol(WebSocketClientProtocol):
 
 if __name__ == '__main__':
 
-    import sys
-
-    from twisted.python import log
-    from twisted.internet import reactor
-
     log.startLogging(sys.stdout)
-    
-    #factory = WebSocketClientFactory("ws://127.0.0.1:9001", debug=False)
+
     factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=False)
     factory.protocol = SendenClientProtocol
 

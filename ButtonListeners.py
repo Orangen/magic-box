@@ -1,13 +1,11 @@
 import time
 import json
 import binaryhelper
+import threading
 import RPi.GPIO as GPIO
 from subprocess import Popen
-import threading
-
 
 class ButtonListenerSenderThread(threading.Thread):
-    # RPi.GPIO Layout verwenden (wie Pin-Nummern)
 
     def __init__(self, client):
         threading.Thread.__init__(self)
@@ -15,7 +13,7 @@ class ButtonListenerSenderThread(threading.Thread):
         self._stop = threading.Event()
 
     def run(self):
-
+        # RPi.GPIO Layout verwenden (wie Pin-Nummern)
         GPIO.setmode(GPIO.BOARD)
 
         # Pin 18 (GPIO 24) auf Input setzen
@@ -89,8 +87,13 @@ class ButtonListenerSenderThread(threading.Thread):
 
 class ButtonListenerReceiverThread(threading.Thread):
 
-    def run():
-        import cups
+    def __init__(self, client):
+        threading.Thread.__init__(self)
+        self.client = client
+        self._stop = threading.Event()
+
+
+    def run(self):
         # RPi.GPIO Layout verwenden (wie Pin-Nummern)
         GPIO.setmode(GPIO.BOARD)
 
@@ -109,28 +112,13 @@ class ButtonListenerReceiverThread(threading.Thread):
         prev_input_21 = 0
         prev_input_22 = 0
 
-        imageName = "image.jpg"
-
         # endlos schleife
-        while True:
+        while not self.stopped():
 
             input_18 = GPIO.input(18)
             input_19 = GPIO.input(19)
             input_21 = GPIO.input(21)
             input_22 = GPIO.input(22)
-
-        # verbindung
-            connection, client_address = sock.accept()
-            data = connection.recv(16)
-
-            if data:
-                # json zu bild
-                json_to_file(data, imageName)
-                # Bild drucken
-                Popen(["lp", imageName])
-
-                time.sleep(0.1)
-                GPIO.output(11, GPIO.HIGH)  # signalleuchte an
 
             if ((not prev_input_18) and input_18):
                 # info senden
@@ -157,3 +145,11 @@ class ButtonListenerReceiverThread(threading.Thread):
             prev_input_21 = input_21
             prev_input_22 = input_22
             time.sleep(0.05)
+
+        # stop the thread
+    def stop(self):
+        self._stop.set()
+
+    # is the thread stopped?
+    def stopped(self):
+        return self._stop.is_set()
