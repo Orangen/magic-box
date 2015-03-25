@@ -5,15 +5,17 @@ import RPi.GPIO as GPIO
 from subprocess import Popen
 import threading
 
+
 class ButtonListenerSenderThread(threading.Thread):
     # RPi.GPIO Layout verwenden (wie Pin-Nummern)
 
     def __init__(self, client):
         threading.Thread.__init__(self)
-        self.client = client;
-
+        self.client = client
+        self._stop = threading.Event()
 
     def run(self):
+
         GPIO.setmode(GPIO.BOARD)
 
         # Pin 18 (GPIO 24) auf Input setzen
@@ -21,6 +23,7 @@ class ButtonListenerSenderThread(threading.Thread):
 
         # Pins auf Output setzen
         GPIO.setup(23, GPIO.OUT)  # Beleuchtung Foto
+        GPIO.setup(16, GPIO.OUT)
         GPIO.setup(18, GPIO.OUT)
         GPIO.setup(19, GPIO.OUT)
         GPIO.setup(21, GPIO.OUT)
@@ -30,24 +33,10 @@ class ButtonListenerSenderThread(threading.Thread):
         prev_input = 0
 
         # Dauersschleife
-        while True:
+        while not self.stopped():
 
             input = GPIO.input(11)
             data = False
-            # bedinung fuer die LEDs
-            if data:
-                # Smilie LED an
-                if data == 1:
-                    GPIO.output(18, GPIO.HIGH)
-                # LED
-                if data == 2:
-                    GPIO.output(19, GPIO.HIGH)
-                # LED
-                if data == 3:
-                    GPIO.output(21, GPIO.HIGH)
-                # LED
-                if data == 4:
-                    GPIO.output(22, GPIO.HIGH)
 
             # bedingung Foto (button 11)
             if ((not prev_input) and input):
@@ -59,16 +48,43 @@ class ButtonListenerSenderThread(threading.Thread):
                 # Bild senden
                 self.client.sendImage(imageName)
 
+                GPIO.output(16, GPIO.LOW)
                 GPIO.output(18, GPIO.LOW)
                 GPIO.output(19, GPIO.LOW)
                 GPIO.output(21, GPIO.LOW)
                 GPIO.output(22, GPIO.LOW)
+
+            # bedinung fuer die LEDs
+            if data:
+                # XD LED an
+                if data == 1:
+                    GPIO.output(18, GPIO.HIGH)
+                # Herz LED an
+                if data == 1:
+                    GPIO.output(18, GPIO.HIGH)
+                # Stern LED an
+                if data == 2:
+                    GPIO.output(19, GPIO.HIGH)
+                # Tele LED an
+                if data == 3:
+                    GPIO.output(21, GPIO.HIGH)
+                # :) LED an
+                if data == 4:
+                    GPIO.output(22, GPIO.HIGH)
 
             prev_input = input
             time.sleep(0.05)
 
             # beleuchtung aus schalten
             GPIO.output(23, GPIO.LOW)
+
+    # stop the thread
+    def stop(self):
+        self._stop.set()
+
+    # is the thread stopped?
+    def stopped(self):
+        return self._stop.is_set()
 
 
 class ButtonListenerReceiverThread(threading.Thread):

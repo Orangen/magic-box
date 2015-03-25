@@ -14,6 +14,7 @@ class SendenClientProtocol(WebSocketClientProtocol):
     def onOpen(self):
         payload = {"name": "sendenBox", "group": "magic-box"}
         self.listener = ButtonListeners.ButtonListenerSenderThread(self)
+        self.listener.daemon = True;
         self.listener.start()
 
 
@@ -38,8 +39,8 @@ if __name__ == '__main__':
     log.startLogging(sys.stdout)
     
     #factory = WebSocketClientFactory("ws://127.0.0.1:9001", debug=False)
-    factory = WebSocketClientFactory("ws://141.19.142.171:9001", debug=False)
+    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=False)
     factory.protocol = SendenClientProtocol
 
-    reactor.connectTCP("141.19.142.171", 9001, factory)
+    reactor.connectTCP("109.239.57.147", 9910, factory)
     reactor.run()
