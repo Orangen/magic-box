@@ -1,11 +1,10 @@
 import time
 import json
-import socket
 import binaryhelper
+import threading
 import RPi.GPIO as GPIO
 from subprocess import Popen
 from autobahn.twisted.websocket import WebSocketClientProtocol
-import threading
 
 class SendenClientProtocol(WebSocketClientProtocol):
 
