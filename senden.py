@@ -8,7 +8,7 @@ import threading
 from autobahn.twisted.websocket import WebSocketClientProtocol, \
     WebSocketClientFactory
 
-
+# verbindungs protokoll zum server
 class SendenClientProtocol(WebSocketClientProtocol):
 
     def onOpen(self):
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     from twisted.internet import reactor
 
     log.startLogging(sys.stdout)
-
+    
     factory = WebSocketClientFactory(
         "ws://127.0.0.1:9001", debug=False)
     factory.protocol = SendenClientProtocol
