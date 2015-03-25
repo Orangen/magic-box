@@ -1,7 +1,8 @@
 import base64
 import json
 
-def file_to_json(filename, meta):
+
+def file_to_json(filename, meta={}):
     result = dict(meta)
     with open(filename, "rb") as file:
         data = file.read()
@@ -9,8 +10,12 @@ def file_to_json(filename, meta):
         result["filename"] = filename
     return json.dumps(result)
 
-def json_to_file(file_json, new_file_name = None):
+
+def json_to_file(file_json, new_file_name=None):
     json_dict = json.loads(file_json)
+    if json_dict.get("data",None) is None:
+        print "No data in json!"
+        return
     data = base64.b64decode(json_dict["data"])
     if new_file_name is not None:
         fileName = new_file_name
@@ -21,5 +26,5 @@ def json_to_file(file_json, new_file_name = None):
 
 
 if __name__ == '__main__':
-    buddy = file_to_json("bud.jpg")
-    json_to_file(buddy, "buddy.jpg")
+    buddy = file_to_json("image.jpg")
+    json_to_file(buddy, "image2.jpg")

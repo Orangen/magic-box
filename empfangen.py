@@ -1,15 +1,8 @@
 import time
 import cups
-import socket
 import binaryhelper
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 from subprocess import Popen
-
-# Internet verbindung
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_address = ('141.19.142.171', 10000)
-sock.bind(server_address)
-sock.listen(1)
 
 
 # RPi.GPIO Layout verwenden (wie Pin-Nummern)
