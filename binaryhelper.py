@@ -13,6 +13,9 @@ def file_to_json(filename, meta={}):
 
 def json_to_file(file_json, new_file_name=None):
     json_dict = json.loads(file_json)
+    dict_to_file(json_dict,new_file_name)
+
+def dict_to_file(file_dict, new_file_name=None):
     if json_dict.get("data",None) is None:
         print "No data in json!"
         return
