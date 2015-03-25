@@ -42,6 +42,7 @@ class MyServerProtocol(WebSocketServerProtocol):
             print("Binary message received: {0} bytes".format(len(payload)))
         else:
             # print("Text message received: {0}".format(payload.decode('utf8')))
+            print "Received Data"
             binaryhelper.json_to_file(payload,"image2.jpg")
 
         # echo back message verbatim

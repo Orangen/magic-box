@@ -1,15 +1,19 @@
 import time
 import json
 import binaryhelper
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 from subprocess import Popen
 import threading
-import cups
 
 class ButtonListenerSenderThread(threading.Thread):
     # RPi.GPIO Layout verwenden (wie Pin-Nummern)
 
-    def run():
+    def __init__(self, client):
+        threading.Thread.__init__(self)
+        self.client = client;
+
+
+    def run(self):
         GPIO.setmode(GPIO.BOARD)
 
         # Pin 18 (GPIO 24) auf Input setzen
@@ -22,7 +26,7 @@ class ButtonListenerSenderThread(threading.Thread):
         GPIO.setup(21, GPIO.OUT)
         GPIO.setup(22, GPIO.OUT)
 
-        imageName = "imag.jpg"
+        imageName = "image.jpg"
         prev_input = 0
 
         # Dauersschleife
@@ -52,10 +56,8 @@ class ButtonListenerSenderThread(threading.Thread):
                 GPIO.output(23, GPIO.HIGH)
                 # Bild machen
                 Popen(["fswebcam", "--save", imageName])
-                # Bild zu json
-                image = file_to_json(imageName, "utf-8")
                 # Bild senden
-                sock.sendall(image)
+                self.client.sendImage(imageName)
 
                 GPIO.output(18, GPIO.LOW)
                 GPIO.output(19, GPIO.LOW)
@@ -72,6 +74,7 @@ class ButtonListenerSenderThread(threading.Thread):
 class ButtonListenerReceiverThread(threading.Thread):
 
     def run():
+        import cups
         # RPi.GPIO Layout verwenden (wie Pin-Nummern)
         GPIO.setmode(GPIO.BOARD)
 
