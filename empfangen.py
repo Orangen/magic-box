@@ -22,22 +22,15 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
         self.listener.daemon = True;
         self.listener.start()
 
-
     def onMessage(self, payload, isBinary):
         if isBinary:
             print("Binary message received: {0} bytes".format(len(payload)))
         else:
             json_dict = json.loads(payload)
-            binaryhelper.json_to_file(payload, "test.jpg")
             if json_dict.get("data",None) is not None:
                 print "Received Data image"
                 binaryhelper.dict_to_file(json_dict, "test.jpg")
                 Control.printImage("image.jpg")
-                
-            if json_dict.get("icons",None) is not None:
-                print "Received Data"
-                showIcons(json_dict.get("icons",None))
-
 
     def sendIcon(self, icon):
         print "send icons"
