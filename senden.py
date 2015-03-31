@@ -24,8 +24,8 @@ class SendenClientProtocol(WebSocketClientProtocol):
     def onMessage(self, payload, isBinary):
         json_dict = json.loads(payload)    
         if json_dict.get("icons",None) is not None:
-            print "Received Data"
-            showIcons(json_dict.get("icons",None))
+            print "Received Data icons"
+            #showIcons(json_dict.get("icons",None))
 
 
     def sendImage(self, fileName):
