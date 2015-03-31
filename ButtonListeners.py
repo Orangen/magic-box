@@ -1,6 +1,5 @@
 import time
 import json
-import binaryhelper
 import threading
 import RPi.GPIO as GPIO
 from subprocess import Popen
@@ -107,12 +106,14 @@ class ButtonListenerReceiverThread(threading.Thread):
         GPIO.setup(19, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
         # Variaben
         prev_input_18 = 0
         prev_input_19 = 0
         prev_input_21 = 0
         prev_input_22 = 0
+        prev_input_23 = 0
 
         # endlos schleife
         while not self.stopped():
@@ -121,24 +122,35 @@ class ButtonListenerReceiverThread(threading.Thread):
             input_19 = GPIO.input(19)
             input_21 = GPIO.input(21)
             input_22 = GPIO.input(22)
+            input_23 = GPIO.input(23)
 
             if ((not prev_input_18) and input_18):
                 # info senden
+                self.client.sendIcon("grinsSmilie")
                 time.sleep(0.05)
                 GPIO.output(11, GPIO.LOW)  # signalleuchte aus
 
             if ((not prev_input_19) and input_19):
                 # info senden
+                self.client.sendIcon("herz")
                 time.sleep(0.05)
                 GPIO.output(11, GPIO.LOW)  # signalleuchte aus
 
             if ((not prev_input_21) and input_21):
                 # info senden
+                self.client.sendIcon("stern")
                 time.sleep(0.05)
                 GPIO.output(11, GPIO.LOW)  # signalleuchte aus
 
             if ((not prev_input_22) and input_22):
                 # info senden
+                self.client.sendIcon("tele")
+                time.sleep(0.05)
+                GPIO.output(11, GPIO.LOW)  # signalleuchte aus
+
+            if ((not prev_input_23) and input_23):
+                # info senden
+                self.client.sendIcon("Smilie")
                 time.sleep(0.05)
                 GPIO.output(11, GPIO.LOW)  # signalleuchte aus
 
@@ -146,6 +158,7 @@ class ButtonListenerReceiverThread(threading.Thread):
             prev_input_19 = input_19
             prev_input_21 = input_21
             prev_input_22 = input_22
+            prev_input_23 = input_23
             time.sleep(0.05)
 
         # stop the thread

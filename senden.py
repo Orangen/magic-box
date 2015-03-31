@@ -2,11 +2,9 @@ import time
 import json
 import binaryhelper
 import ButtonListeners
-import threading
 import sys
 from twisted.python import log
 from twisted.internet import reactor
-from subprocess import Popen
 from autobahn.twisted.websocket import WebSocketClientProtocol
 from autobahn.twisted.websocket import WebSocketClientProtocol, \
     WebSocketClientFactory
@@ -26,7 +24,7 @@ class SendenClientProtocol(WebSocketClientProtocol):
         json_dict = json.loads(payload)    
         if json_dict.get("icons",None) is not None:
             print "Received Data icons"
-            #showIcons(json_dict.get("icons",None))
+            showIcons(json_dict.get("icons",None))
 
 
     def sendImage(self, fileName):
@@ -47,7 +45,7 @@ class Control():
 
         # XD LED an
         if json_dict.get("icons",None) is "grinsSmilie":
-            GPIO.output(18, GPIO.HIGH)
+            GPIO.output(16, GPIO.HIGH)
         # Herz LED an
         if json_dict.get("icons",None) is "herz":
             GPIO.output(18, GPIO.HIGH)

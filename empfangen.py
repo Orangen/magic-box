@@ -2,7 +2,6 @@ import time
 import json
 import binaryhelper
 import ButtonListeners
-import threading
 import sys
 from twisted.python import log
 from twisted.internet import reactor
@@ -32,9 +31,9 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
                 Control.printImage("image.jpg")
 
     def sendIcon(self, icon):
-        print "send icons"
-        self.sendMessage(icon)
-
+        print "send icons", icon
+        payload = {"icons": icon}    
+        self.sendMessage(payload)
 
 
 class Control():
@@ -45,7 +44,6 @@ class Control():
     # Pins auf Output setzen
     GPIO.setup(11, GPIO.OUT)
 
-
     def printImage(self, imageName):
         # Bild drucken
         Popen(["lp", imageName])
@@ -53,8 +51,6 @@ class Control():
         time.sleep(0.1)
         # signalleuchte an
         GPIO.output(11, GPIO.HIGH) 
-
-
 
 
 if __name__ == '__main__':
