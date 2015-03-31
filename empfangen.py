@@ -24,7 +24,6 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
 
     def onMessage(self, payload, isBinary):
         print "onMessage"
-        self.sendMessage("angekommen")
         if isBinary:
             print("Binary message received: {0} bytes".format(len(payload)))
         else:
@@ -63,7 +62,7 @@ if __name__ == '__main__':
 
     log.startLogging(sys.stdout)
 
-    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=False)
+    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=True)
     factory.protocol = ReceiverClientProtocol
 
     reactor.connectTCP("109.239.57.147", 9910, factory)

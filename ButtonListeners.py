@@ -43,6 +43,7 @@ class ButtonListenerSenderThread(threading.Thread):
                 GPIO.output(23, GPIO.HIGH)
                 # Bild machen
                 Popen(["fswebcam", "--save", imageName])
+                time.sleep(0.1)
                 # Bild senden
                 self.client.sendImage(imageName)
 

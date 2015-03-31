@@ -22,6 +22,7 @@ class SendenClientProtocol(WebSocketClientProtocol):
 
 
     def onMessage(self, payload, isBinary):
+        print "Received Data"
         json_dict = json.loads(payload)    
         if json_dict.get("icons",None) is not None:
             print "Received Data icons"
@@ -30,8 +31,8 @@ class SendenClientProtocol(WebSocketClientProtocol):
 
     def sendImage(self, fileName):
         print "Sending image", fileName
-        payload = binaryhelper.file_to_json(fileName, {"group":"magic-box"})
-        self.sendMessage(payload)
+        payload = binaryhelper.file_to_json(fileName, {})
+        self.sendMessage(payload, isBinary = False)
 
 
 class Control():
