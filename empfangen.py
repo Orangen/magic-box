@@ -23,6 +23,7 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
         self.listener.start()
 
     def onMessage(self, payload, isBinary):
+        print "onMessage"
         if isBinary:
             print("Binary message received: {0} bytes".format(len(payload)))
         else:

@@ -36,7 +36,7 @@ class ButtonListenerSenderThread(threading.Thread):
             input = GPIO.input(11)
             data = False
 
-            # bedingung Foto (button 11)
+            # bedingung Foto (button 11 gedrueckt)
             if ((not prev_input) and input):
 
                 # Beleuchtung anschalten
