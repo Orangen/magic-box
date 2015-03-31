@@ -4,8 +4,6 @@ import binaryhelper
 import ButtonListeners
 import threading
 import sys
-import RPi.GPIO as GPIO
-from subprocess import Popen
 from twisted.python import log
 from twisted.internet import reactor
 from subprocess import Popen
@@ -40,6 +38,7 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
 
 
 class Control():
+    import RPi.GPIO as GPIO
 
     # RPi.GPIO Layout verwenden (wie Pin-Nummern)
     GPIO.setmode(GPIO.BOARD)

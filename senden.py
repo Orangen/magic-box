@@ -36,6 +36,7 @@ class SendenClientProtocol(WebSocketClientProtocol):
 
 
 class Control():
+    import RPi.GPIO as GPIO
 
     def showIcons(self, icons):
         GPIO.setup(16, GPIO.OUT)
@@ -65,7 +66,7 @@ if __name__ == '__main__':
 
     log.startLogging(sys.stdout)
 
-    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=False)
+    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=True)
     factory.protocol = SendenClientProtocol
 
     reactor.connectTCP("109.239.57.147", 9910, factory)

@@ -15,6 +15,7 @@ class ButtonListenerSenderThread(threading.Thread):
     def run(self):
         # RPi.GPIO Layout verwenden (wie Pin-Nummern)
         GPIO.setmode(GPIO.BOARD)
+        GPIO.setwarnings(False) 
 
         # Pin 18 (GPIO 24) auf Input setzen
         GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
