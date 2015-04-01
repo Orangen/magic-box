@@ -26,13 +26,13 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
             print "recive Image"
             binaryhelper.json_to_file(payload)
             print "Print image"
-            Popen(["lp", imageName])  
+            Popen(["lp", "image.jpg"])
             self.listener.showLight()
 
     def sendIcon(self, icon):
-        print "send icons", icon
-        payload = {"icons": icon}    
-        self.sendMessage(payload)
+        print "send icon: ", icon
+        payload = {"icons": icon}
+        self.sendMessage(json.dumps(payload))
 
 
 if __name__ == '__main__':

@@ -11,6 +11,9 @@ class ButtonListenerSenderThread(threading.Thread):
         self.client = client
         self._stop = threading.Event()
 
+    def showIcons (self, icon):
+        print icon
+
     def run(self):
         # RPi.GPIO Layout verwenden (wie Pin-Nummern)
         GPIO.setmode(GPIO.BOARD)
@@ -94,8 +97,6 @@ class ButtonListenerReceiverThread(threading.Thread):
         self._stop = threading.Event()
 
     def showLight(self):
-        # Pins auf Output setzen
-        GPIO.setup(11, GPIO.OUT)
         # signalleuchte an
         GPIO.output(11, GPIO.HIGH) 
 
@@ -104,6 +105,12 @@ class ButtonListenerReceiverThread(threading.Thread):
         # RPi.GPIO Layout verwenden (wie Pin-Nummern)
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
+
+        # Pins auf Output setzen
+        GPIO.setup(11, GPIO.OUT)
+        # signalleuchte an
+        GPIO.output(11, GPIO.LOW) 
+
 
         # Pins auf Input setzen
         GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -131,12 +138,14 @@ class ButtonListenerReceiverThread(threading.Thread):
 
             if ((not prev_input_18) and input_18):
                 # info senden
+                print "grinsSmilie gedrueckt"
                 self.client.sendIcon("grinsSmilie")
                 time.sleep(0.05)
                 GPIO.output(11, GPIO.LOW)  # signalleuchte aus
 
             if ((not prev_input_19) and input_19):
                 # info senden
+                print "herz gedrueckt"
                 self.client.sendIcon("herz")
                 time.sleep(0.05)
                 GPIO.output(11, GPIO.LOW)  # signalleuchte aus
