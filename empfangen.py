@@ -3,9 +3,9 @@ import json
 import binaryhelper
 import ButtonListeners
 import sys
+from subprocess import Popen
 from twisted.python import log
 from twisted.internet import reactor
-from subprocess import Popen
 from autobahn.twisted.websocket import WebSocketClientProtocol
 from autobahn.twisted.websocket import WebSocketClientFactory
 
@@ -14,41 +14,25 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
 
     def onOpen(self):
         payload = {"name": "receiverBox", "group":"magic-box"}
-        #self.listener = ButtonListeners.ButtonListenerReceiverThread(self)
-        #self.listener.daemon = True;
-        #self.listener.start()
+        self.listener = ButtonListeners.ButtonListenerReceiverThread(self)
+        self.listener.daemon = True;
+        self.listener.start()
         self.sendMessage(json.dumps(payload))
 
     def onMessage(self, payload, isBinary):
-        print "onMessage"
         if isBinary:
             print("Binary message received: {0} bytes".format(len(payload)))
         else:
+            print "recive Image"
             binaryhelper.json_to_file(payload)
-            Control().printImage("image.jpg")
+            print "Print image"
+            Popen(["lp", imageName])  
+            self.listener.showLight(True)
 
     def sendIcon(self, icon):
         print "send icons", icon
         payload = {"icons": icon}    
         self.sendMessage(payload)
-
-
-class Control():
-    import RPi.GPIO as GPIO
-
-    # RPi.GPIO Layout verwenden (wie Pin-Nummern)
-    #GPIO.setmode(GPIO.BOARD)
-    # GPIO.setwarnings(False)
-    # Pins auf Output setzen
-    # GPIO.setup(11, GPIO.OUT)
-
-    def printImage(self, imageName):
-        # Bild drucken
-        Popen(["lp", imageName])
-        print "Received Data image"
-        time.sleep(0.1)
-        # signalleuchte an
-        # GPIO.output(11, GPIO.HIGH) 
 
 
 if __name__ == '__main__':
