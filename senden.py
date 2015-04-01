@@ -12,7 +12,7 @@ from autobahn.twisted.websocket import WebSocketClientFactory
 class SendenClientProtocol(WebSocketClientProtocol):
 
     def onOpen(self):
-        payload = {"name": "receiverBox", "group":"magic-box"}
+        payload = {"name": "senderBox", "group":"magic-box"}
         self.listener = ButtonListeners.ButtonListenerSenderThread(self)
         self.listener.daemon = True;
         self.listener.start()
@@ -20,10 +20,6 @@ class SendenClientProtocol(WebSocketClientProtocol):
 
     def onMessage(self, payload, isBinary):
         print "Received Data"
-        json_dict = json.loads(payload)    
-        if json_dict.get("icons",None) is not None:
-            print "Received Data icons"
-            showIcons(json_dict.get("icons",None))
 
 
     def sendImage(self, fileName):
