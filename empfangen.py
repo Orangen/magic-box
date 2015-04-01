@@ -17,6 +17,7 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
         self.listener = ButtonListeners.ButtonListenerReceiverThread(self)
         self.listener.daemon = True;
         self.listener.start()
+        self.sendMessage(json.dumps(payload))
 
     def onMessage(self, payload, isBinary):
         print "onMessage"
@@ -57,8 +58,9 @@ if __name__ == '__main__':
 
     log.startLogging(sys.stdout)
 
-    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=True)
-    factory.protocol = ReceiverClientProtocol
+    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=True,debugCodePaths=True)
+    factory.protocol = ReceiverClientProtocol 
+    factory.setProtocolOptions(allowHixie76=True)
 
     reactor.connectTCP("109.239.57.147", 9910, factory)
     reactor.run()
