@@ -31,7 +31,7 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
 
     def sendIcon(self, icon):
         print "send icon: ", icon
-        payload = {"icons": icon}
+        payload = {"icon": icon}
         self.sendMessage(json.dumps(payload))
 
 

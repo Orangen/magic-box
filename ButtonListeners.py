@@ -12,23 +12,41 @@ class ButtonListenerSenderThread(threading.Thread):
         self._stop = threading.Event()
 
     def showIcons (self, icon):
-        print icon
+        print "icon: ", icon
+
+        # XD LED an
+        if icon.get("icon",None) is "grinsSmilie":
+            GPIO.output(16, GPIO.HIGH)
+        # Herz LED an
+        if icon.get("icon",None) is "herz":
+            GPIO.output(18, GPIO.HIGH)
+        # Stern LED an
+        if icon.get("icon",None) is "stern":
+            GPIO.output(19, GPIO.HIGH)
+        # Tele LED an
+        if icon.get("icon",None) is "tele":
+            GPIO.output(21, GPIO.HIGH)
+        # :) LED an
+        if icon.get("icon",None) is "Smilie":
+            GPIO.output(22, GPIO.HIGH)
+
 
     def run(self):
         # RPi.GPIO Layout verwenden (wie Pin-Nummern)
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False) 
 
-        # Pin 18 (GPIO 24) auf Input setzen
+        # Pin auf Input setzen
         GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
         # Pins auf Output setzen
-        GPIO.setup(23, GPIO.OUT)  # Beleuchtung Foto
-        GPIO.setup(16, GPIO.OUT)
-        GPIO.setup(18, GPIO.OUT)
-        GPIO.setup(19, GPIO.OUT)
+        GPIO.setup(16, GPIO.OUT)  # Beleuchtung Foto
+        
+        GPIO.setup(18, GPIO.OUT)  # icon
+        GPIO.setup(19, GPIO.OUT)  # icon herz
         GPIO.setup(21, GPIO.OUT)
         GPIO.setup(22, GPIO.OUT)
+        GPIO.setup(23, GPIO.OUT)
 
         imageName = "image.jpg"
         prev_input = 0
@@ -43,42 +61,24 @@ class ButtonListenerSenderThread(threading.Thread):
             if ((not prev_input) and input):
 
                 # Beleuchtung anschalten
-                GPIO.output(23, GPIO.HIGH)
+                GPIO.output(16, GPIO.HIGH)
                 # Bild machen
                 Popen(["fswebcam", "--save", imageName])
                 time.sleep(0.1)
                 # Bild senden
                 self.client.sendImage(imageName)
 
-                GPIO.output(16, GPIO.LOW)
                 GPIO.output(18, GPIO.LOW)
                 GPIO.output(19, GPIO.LOW)
                 GPIO.output(21, GPIO.LOW)
                 GPIO.output(22, GPIO.LOW)
-
-            # bedinung fuer die LEDs
-            if data:
-                # XD LED an
-                if data == 1:
-                    GPIO.output(18, GPIO.HIGH)
-                # Herz LED an
-                if data == 1:
-                    GPIO.output(18, GPIO.HIGH)
-                # Stern LED an
-                if data == 2:
-                    GPIO.output(19, GPIO.HIGH)
-                # Tele LED an
-                if data == 3:
-                    GPIO.output(21, GPIO.HIGH)
-                # :) LED an
-                if data == 4:
-                    GPIO.output(22, GPIO.HIGH)
+                GPIO.output(23, GPIO.LOW)
 
             prev_input = input
-            time.sleep(0.05)
+            time.sleep(0.1)
 
             # beleuchtung aus schalten
-            GPIO.output(23, GPIO.LOW)
+            GPIO.output(16, GPIO.LOW)
 
     # stop the thread
     def stop(self):
@@ -138,14 +138,12 @@ class ButtonListenerReceiverThread(threading.Thread):
 
             if ((not prev_input_18) and input_18):
                 # info senden
-                print "grinsSmilie gedrueckt"
                 self.client.sendIcon("grinsSmilie")
                 time.sleep(0.05)
                 GPIO.output(11, GPIO.LOW)  # signalleuchte aus
 
             if ((not prev_input_19) and input_19):
                 # info senden
-                print "herz gedrueckt"
                 self.client.sendIcon("herz")
                 time.sleep(0.05)
                 GPIO.output(11, GPIO.LOW)  # signalleuchte aus
