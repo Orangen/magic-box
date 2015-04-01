@@ -6,14 +6,13 @@ import sys
 from twisted.python import log
 from twisted.internet import reactor
 from autobahn.twisted.websocket import WebSocketClientProtocol
-from autobahn.twisted.websocket import WebSocketClientProtocol, \
-    WebSocketClientFactory
+from autobahn.twisted.websocket import WebSocketClientFactory
 
 # verbindungs protokoll zum server
 class SendenClientProtocol(WebSocketClientProtocol):
 
     def onOpen(self):
-        payload = {"name": "sendenBox", "group": "magic-box"}
+        payload = {"name": "sendenBox"}
         self.listener = ButtonListeners.ButtonListenerSenderThread(self)
         self.listener.daemon = True;
         self.listener.start()
@@ -35,6 +34,7 @@ class SendenClientProtocol(WebSocketClientProtocol):
 
 class Control():
     import RPi.GPIO as GPIO
+    GPIO.setwarnings(False)
 
     def showIcons(self, icons):
         GPIO.setup(16, GPIO.OUT)

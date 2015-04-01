@@ -7,14 +7,13 @@ from twisted.python import log
 from twisted.internet import reactor
 from subprocess import Popen
 from autobahn.twisted.websocket import WebSocketClientProtocol
-from autobahn.twisted.websocket import WebSocketClientProtocol, \
-    WebSocketClientFactory
+from autobahn.twisted.websocket import WebSocketClientFactory
 
 # verbindungs protokoll zum server
 class ReceiverClientProtocol(WebSocketClientProtocol):
 
     def onOpen(self):
-        payload = {"name": "receiverBox", "group": "magic-box"}
+        payload = {"name": "receiverBox"}
         self.listener = ButtonListeners.ButtonListenerReceiverThread(self)
         self.listener.daemon = True;
         self.listener.start()
@@ -41,6 +40,7 @@ class Control():
 
     # RPi.GPIO Layout verwenden (wie Pin-Nummern)
     GPIO.setmode(GPIO.BOARD)
+    GPIO.setwarnings(False)
     # Pins auf Output setzen
     GPIO.setup(11, GPIO.OUT)
 
