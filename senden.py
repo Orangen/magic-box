@@ -12,7 +12,7 @@ from autobahn.twisted.websocket import WebSocketClientFactory
 class SendenClientProtocol(WebSocketClientProtocol):
 
     def onOpen(self):
-        payload = {"name": "sendenBox"}
+        payload = {"name": "receiverBox", "group":"magic-box"}
         self.listener = ButtonListeners.ButtonListenerSenderThread(self)
         self.listener.daemon = True;
         self.listener.start()
