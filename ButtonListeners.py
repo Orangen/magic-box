@@ -93,11 +93,11 @@ class ButtonListenerReceiverThread(threading.Thread):
         self.client = client
         self._stop = threading.Event()
 
-    def showLight():
+    def showLight(self):
         # Pins auf Output setzen
         GPIO.setup(11, GPIO.OUT)
         # signalleuchte an
-         GPIO.output(11, GPIO.HIGH) 
+        GPIO.output(11, GPIO.HIGH) 
 
     def run(self):
 

@@ -27,7 +27,7 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
             binaryhelper.json_to_file(payload)
             print "Print image"
             Popen(["lp", imageName])  
-            self.listener.showLight(True)
+            self.listener.showLight()
 
     def sendIcon(self, icon):
         print "send icons", icon
