@@ -19,42 +19,18 @@ class SendenClientProtocol(WebSocketClientProtocol):
         self.sendMessage(json.dumps(payload))
 
     def onMessage(self, payload, isBinary):
-        print "Received Data"
+        if isBinary:
+            print("Binary message received: {0} bytes".format(len(payload)))
+        else:
+            print "recive Icons"
+            payload = binaryhelper.json_to_file(payload)
+            self.listener.showIcons(payload)
 
 
     def sendImage(self, fileName):
         print "Sending image", fileName
         payload = binaryhelper.file_to_json(fileName, {})
         self.sendMessage(payload, isBinary = False)
-
-
-class Control():
-    import RPi.GPIO as GPIO
-    GPIO.setwarnings(False)
-
-    def showIcons(self, icons):
-        GPIO.setup(16, GPIO.OUT)
-        GPIO.setup(18, GPIO.OUT)
-        GPIO.setup(19, GPIO.OUT)
-        GPIO.setup(21, GPIO.OUT)
-        GPIO.setup(22, GPIO.OUT)
-
-        # XD LED an
-        if json_dict.get("icons",None) is "grinsSmilie":
-            GPIO.output(16, GPIO.HIGH)
-        # Herz LED an
-        if json_dict.get("icons",None) is "herz":
-            GPIO.output(18, GPIO.HIGH)
-        # Stern LED an
-        if json_dict.get("icons",None) is "stern":
-            GPIO.output(19, GPIO.HIGH)
-        # Tele LED an
-        if json_dict.get("icons",None) is "tele":
-            GPIO.output(21, GPIO.HIGH)
-        # :) LED an
-        if json_dict.get("icons",None) is "Smilie":
-            GPIO.output(22, GPIO.HIGH)
-
 
 if __name__ == '__main__':
 
