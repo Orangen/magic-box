@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     log.startLogging(sys.stdout)
 
-    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=True,debugCodePaths=True)
+    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=False,debugCodePaths=False)
     factory.protocol = SendenClientProtocol
     factory.setProtocolOptions(allowHixie76=True)
 

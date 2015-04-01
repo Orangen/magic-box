@@ -19,11 +19,11 @@ def dict_to_file(file_dict, new_file_name=None):
     if file_dict.get("data",None) == None:
         print "No data in json!"
         return
-    data = base64.b64decode(json_dict["data"])
+    data = base64.b64decode(file_dict["data"])
     if new_file_name is not None:
         fileName = new_file_name
     else:
-        fileName = json_dict["filename"]
+        fileName = file_dict["filename"]
     with open(fileName, "wb+") as file:
         file.write(data)
 

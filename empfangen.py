@@ -14,9 +14,9 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
 
     def onOpen(self):
         payload = {"name": "receiverBox", "group":"magic-box"}
-        self.listener = ButtonListeners.ButtonListenerReceiverThread(self)
-        self.listener.daemon = True;
-        self.listener.start()
+        #self.listener = ButtonListeners.ButtonListenerReceiverThread(self)
+        #self.listener.daemon = True;
+        #self.listener.start()
         self.sendMessage(json.dumps(payload))
 
     def onMessage(self, payload, isBinary):
@@ -25,7 +25,7 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
             print("Binary message received: {0} bytes".format(len(payload)))
         else:
             binaryhelper.json_to_file(payload)
-            Control.printImage("image.jpg")
+            Control().printImage("image.jpg")
 
     def sendIcon(self, icon):
         print "send icons", icon
@@ -37,10 +37,10 @@ class Control():
     import RPi.GPIO as GPIO
 
     # RPi.GPIO Layout verwenden (wie Pin-Nummern)
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setwarnings(False)
+    #GPIO.setmode(GPIO.BOARD)
+    # GPIO.setwarnings(False)
     # Pins auf Output setzen
-    GPIO.setup(11, GPIO.OUT)
+    # GPIO.setup(11, GPIO.OUT)
 
     def printImage(self, imageName):
         # Bild drucken
@@ -48,14 +48,14 @@ class Control():
         print "Received Data image"
         time.sleep(0.1)
         # signalleuchte an
-        GPIO.output(11, GPIO.HIGH) 
+        # GPIO.output(11, GPIO.HIGH) 
 
 
 if __name__ == '__main__':
 
     log.startLogging(sys.stdout)
 
-    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=True,debugCodePaths=True)
+    factory = WebSocketClientFactory("ws://109.239.57.147:9910", debug=False,debugCodePaths=False)
     factory.protocol = ReceiverClientProtocol 
     factory.setProtocolOptions(allowHixie76=True)
 
