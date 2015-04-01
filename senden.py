@@ -23,8 +23,8 @@ class SendenClientProtocol(WebSocketClientProtocol):
         if isBinary:
             print("Binary message received: {0} bytes".format(len(payload)))
         else:
-            print "recive Icons"
-            payload = binaryhelper.json_to_file(payload)
+            print "recive Icons: ", payload
+            #payload = file_to_json(payload)
             self.listener.showIcons(payload)
 
 
