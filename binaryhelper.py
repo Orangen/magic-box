@@ -16,7 +16,7 @@ def json_to_file(file_json, new_file_name=None):
     dict_to_file(json_dict,new_file_name)
 
 def dict_to_file(file_dict, new_file_name=None):
-    if json_dict.get("data",None) is None:
+    if file_dict.get("data",None) == None:
         print "No data in json!"
         return
     data = base64.b64decode(json_dict["data"])
