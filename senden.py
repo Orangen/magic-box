@@ -19,7 +19,7 @@ class SendenClientProtocol(WebSocketClientProtocol):
         self.sendMessage(json.dumps(payload))
 
     def onMessage(self, payload, isBinary):
-        print "Received Data"
+        print "Received Icons"
 
 
     def sendImage(self, fileName):
