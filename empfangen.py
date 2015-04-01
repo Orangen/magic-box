@@ -24,11 +24,8 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
         if isBinary:
             print("Binary message received: {0} bytes".format(len(payload)))
         else:
-            json_dict = json.loads(payload)
-            if json_dict.get("data",None) is not None:
-                print "Received Data image"
-                binaryhelper.dict_to_file(json_dict, "test.jpg")
-                Control.printImage("image.jpg")
+            binaryhelper.json_to_file(payload)
+            Control.printImage("image.jpg")
 
     def sendIcon(self, icon):
         print "send icons", icon
