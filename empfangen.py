@@ -17,7 +17,7 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
         self.listener = ButtonListeners.ButtonListenerReceiverThread(self)
         self.listener.daemon = True;
         self.listener.start()
-        self.sendMessage(json.dumps(payload))
+        self.sendMessage(json.dumps(payload), isBinary = False)
 
     def onMessage(self, payload, isBinary):
         if isBinary:
