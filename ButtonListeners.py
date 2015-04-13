@@ -23,6 +23,12 @@ class ButtonListenerSenderThread(threading.Thread):
         if icon == "herz":
             print "LED"
             GPIO.output(18, GPIO.HIGH)
+        if icon is "herz":
+            print "LED is"
+            GPIO.output(18, GPIO.HIGH)
+        if icon == '"herz"':
+            print "LED '' "
+            GPIO.output(18, GPIO.HIGH)
         # Stern LED an
         if icon == "stern":
             print "LED"
