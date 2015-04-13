@@ -16,31 +16,20 @@ class ButtonListenerSenderThread(threading.Thread):
         print icon
 
         # XD LED an
-        if icon == "grinsSmilie":
-            print "LED"
-            GPIO.output(16, GPIO.HIGH)
+        if icon == '"grinsSmilie"':
+            GPIO.output(18, GPIO.HIGH)
         # Herz LED an
-        if icon == "herz":
-            print "LED"
-            GPIO.output(18, GPIO.HIGH)
-        if icon is "herz":
-            print "LED is"
-            GPIO.output(18, GPIO.HIGH)
         if icon == '"herz"':
-            print "LED '' "
-            GPIO.output(18, GPIO.HIGH)
-        # Stern LED an
-        if icon == "stern":
-            print "LED"
             GPIO.output(19, GPIO.HIGH)
-        # Tele LED an
-        if icon == "tele":
-            print "LED"
+        # Stern LED an
+        if icon == '"stern"':
             GPIO.output(21, GPIO.HIGH)
-        # :) LED an
-        if icon == "Smilie":
-            print "LED"
+        # Tele LED an
+        if icon == '"tele"':
             GPIO.output(22, GPIO.HIGH)
+        # :) LED an
+        if icon == '"Smilie"':
+            GPIO.output(23, GPIO.HIGH)
 
 
     def run(self):
