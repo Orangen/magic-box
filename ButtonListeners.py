@@ -14,24 +14,27 @@ class ButtonListenerSenderThread(threading.Thread):
     def showIcons (self, icon):
 
         print icon
-        print type (icon)
 
         # XD LED an
-        #if icon.get("icon",None) is "grinsSmilie":
-            #GPIO.output(16, GPIO.HIGH)
+        if icon == "grinsSmilie":
+            print LED
+            GPIO.output(16, GPIO.HIGH)
         # Herz LED an
         if icon == "herz":
-        #if icon.get("icon",None) is "herz":
+            print LED
             GPIO.output(18, GPIO.HIGH)
         # Stern LED an
-        #if icon.get("icon",None) is "stern":
-            #GPIO.output(19, GPIO.HIGH)
+        if icon == "stern":
+            print LED
+            GPIO.output(19, GPIO.HIGH)
         # Tele LED an
-        #if icon.get("icon",None) is "tele":
-            #GPIO.output(21, GPIO.HIGH)
+        if icon == "tele":
+            print LED
+            GPIO.output(21, GPIO.HIGH)
         # :) LED an
-        #if icon.get("icon",None) is "Smilie":
-            #GPIO.output(22, GPIO.HIGH)
+        if icon == "Smilie":
+            print LED
+            GPIO.output(22, GPIO.HIGH)
 
 
     def run(self):
