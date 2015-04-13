@@ -1,4 +1,3 @@
-import time
 import json
 import binaryhelper
 import ButtonListeners
@@ -20,12 +19,14 @@ class SendenClientProtocol(WebSocketClientProtocol):
 
     def onMessage(self, payload, isBinary):
         print "Massage", payload
-        if isBinary:
-            print("Binary message received: {0} bytes".format(len(payload)))
-        #if payload == "z":    
-        else:
-            print "recive Icons: ", payload
-            self.listener.showIcons(payload)
+        if payload == "z":
+            print "reciver disconected"
+        else:   
+            if isBinary:
+                print("Binary message received: {0} bytes".format(len(payload))) 
+            else:
+                print "recive Icons: ", payload
+                self.listener.showIcons(payload)
 
 
     def sendImage(self, fileName):

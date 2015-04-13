@@ -13,8 +13,6 @@ class ButtonListenerSenderThread(threading.Thread):
 
     def showIcons (self, icon):
 
-        print icon
-
         # XD LED an
         if icon == '"grinsSmilie"':
             GPIO.output(18, GPIO.HIGH)
@@ -42,12 +40,19 @@ class ButtonListenerSenderThread(threading.Thread):
 
         # Pins auf Output setzen
         GPIO.setup(16, GPIO.OUT)  # Beleuchtung Foto
+        GPIO.output(16, GPIO.LOW)
         
         GPIO.setup(18, GPIO.OUT)  # icon
         GPIO.setup(19, GPIO.OUT)  # icon herz
         GPIO.setup(21, GPIO.OUT)
         GPIO.setup(22, GPIO.OUT)
         GPIO.setup(23, GPIO.OUT)
+
+        GPIO.output(18, GPIO.LOW)
+        GPIO.output(19, GPIO.LOW)
+        GPIO.output(21, GPIO.LOW)
+        GPIO.output(22, GPIO.LOW)
+        GPIO.output(23, GPIO.LOW)
 
         imageName = "image.jpg"
         prev_input = 0
