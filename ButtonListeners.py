@@ -14,6 +14,7 @@ class ButtonListenerSenderThread(threading.Thread):
 
     def showIcons (self, icon):
         print "icon: ", icon
+        icon = json.dumps(icon)
 
         # XD LED an
         if icon.get("icon",None) is "grinsSmilie":

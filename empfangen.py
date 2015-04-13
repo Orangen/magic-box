@@ -22,6 +22,7 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
     def onMessage(self, payload, isBinary):
         if isBinary:
             print("Binary message received: {0} bytes".format(len(payload)))
+        #if Z :
         else:
             print "recive Image"
             binaryhelper.json_to_file(payload)
@@ -32,7 +33,7 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
     def sendIcon(self, icon):
         print "send icon: ", icon
         payload = {"icon": icon}
-        self.sendMessage(json.dumps(payload))
+        self.sendMessage(json.dumps(payload), isBinary = False)
 
 
 if __name__ == '__main__':
