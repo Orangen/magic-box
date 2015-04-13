@@ -30,9 +30,10 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
             Popen(["lp", "image.jpg"])
             self.listener.showLight()
 
+
     def sendIcon(self, icon):
         print "send icon: ", icon
-        payload = {"icon": icon}
+        payload = icon
         self.sendMessage(json.dumps(payload), isBinary = False)
 
 
