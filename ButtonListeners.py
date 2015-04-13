@@ -16,10 +16,6 @@ class ButtonListenerSenderThread(threading.Thread):
         print icon
         print type (icon)
 
-        icon.split('"');
-        print icon[3]
-
-
         # XD LED an
         #if icon.get("icon",None) is "grinsSmilie":
             #GPIO.output(16, GPIO.HIGH)
