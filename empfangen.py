@@ -20,15 +20,16 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
         self.sendMessage(json.dumps(payload), isBinary = False)
 
     def onMessage(self, payload, isBinary):
-        if isBinary:
-            print("Binary message received: {0} bytes".format(len(payload)))
-        #if Z :
-        else:
-            print "recive Image"
-            binaryhelper.json_to_file(payload)
-            print "Print image"
-            Popen(["lp", "image.jpg"])
-            self.listener.showLight()
+        if payload == "z":
+        print "sender disconected"
+            if isBinary:
+                print("Binary message received: {0} bytes".format(len(payload)))
+            else:
+                print "recive Image"
+                binaryhelper.json_to_file(payload)
+                print "Print image"
+                Popen(["lp", "image.jpg"])
+                self.listener.showLight()
 
 
     def sendIcon(self, icon):
