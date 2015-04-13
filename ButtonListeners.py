@@ -20,8 +20,9 @@ class ButtonListenerSenderThread(threading.Thread):
         #if icon.get("icon",None) is "grinsSmilie":
             #GPIO.output(16, GPIO.HIGH)
         # Herz LED an
+        if icon == "herz"
         #if icon.get("icon",None) is "herz":
-            #GPIO.output(18, GPIO.HIGH)
+            GPIO.output(18, GPIO.HIGH)
         # Stern LED an
         #if icon.get("icon",None) is "stern":
             #GPIO.output(19, GPIO.HIGH)
