@@ -18,7 +18,6 @@ class SendenClientProtocol(WebSocketClientProtocol):
         self.sendMessage(json.dumps(payload), isBinary = False)
 
     def onMessage(self, payload, isBinary):
-        print "Massage", payload
         if payload == "z":
             print "reciver disconected"
         else:   

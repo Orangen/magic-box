@@ -42,8 +42,8 @@ class ButtonListenerSenderThread(threading.Thread):
         GPIO.setup(16, GPIO.OUT)  # Beleuchtung Foto
         GPIO.output(16, GPIO.LOW)
         
-        GPIO.setup(18, GPIO.OUT)  # icon
-        GPIO.setup(19, GPIO.OUT)  # icon herz
+        GPIO.setup(18, GPIO.OUT)  # icons
+        GPIO.setup(19, GPIO.OUT)
         GPIO.setup(21, GPIO.OUT)
         GPIO.setup(22, GPIO.OUT)
         GPIO.setup(23, GPIO.OUT)
@@ -140,7 +140,6 @@ class ButtonListenerReceiverThread(threading.Thread):
             input_21 = GPIO.input(21)
             input_22 = GPIO.input(22)
             input_23 = GPIO.input(23)
-
 
             if ((not prev_input_18) and input_18):
                 # info senden
