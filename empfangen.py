@@ -21,7 +21,8 @@ class ReceiverClientProtocol(WebSocketClientProtocol):
 
     def onMessage(self, payload, isBinary):
         if payload == "z":
-        print "sender disconected"
+            print "sender disconected"
+        else:   
             if isBinary:
                 print("Binary message received: {0} bytes".format(len(payload)))
             else:
