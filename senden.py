@@ -19,12 +19,12 @@ class SendenClientProtocol(WebSocketClientProtocol):
         self.sendMessage(json.dumps(payload), isBinary = False)
 
     def onMessage(self, payload, isBinary):
-
+        print "Massage", payload
         if isBinary:
             print("Binary message received: {0} bytes".format(len(payload)))
+        #if payload == "z":    
         else:
             print "recive Icons: ", payload
-            #payload = file_to_json(payload)
             self.listener.showIcons(payload)
 
 
