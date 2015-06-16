@@ -40,7 +40,14 @@ class ButtonListenerSenderThread(threading.Thread):
 
         # Pins auf Output setzen
         GPIO.setup(16, GPIO.OUT)  # Beleuchtung Foto
+        GPIO.setup(29, GPIO.OUT)
+        GPIO.setup(31, GPIO.OUT)
+        GPIO.setup(32, GPIO.OUT)
+
         GPIO.output(16, GPIO.LOW)
+        GPIO.output(29, GPIO.LOW)
+        GPIO.output(31, GPIO.LOW)
+        GPIO.output(32, GPIO.LOW)
         
         GPIO.setup(18, GPIO.OUT)  # icons
         GPIO.setup(19, GPIO.OUT)
