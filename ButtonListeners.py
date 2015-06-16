@@ -75,6 +75,10 @@ class ButtonListenerSenderThread(threading.Thread):
 
                 # Beleuchtung anschalten
                 GPIO.output(16, GPIO.HIGH)
+                GPIO.output(29, GPIO.HIGH)
+                GPIO.output(31, GPIO.HIGH)
+                GPIO.output(32, GPIO.HIGH)
+
                 # Bild machen
                 Popen(["fswebcam", "-r 1920x1080", "--no-banner", imageName])
                 time.sleep(20)
@@ -93,6 +97,9 @@ class ButtonListenerSenderThread(threading.Thread):
 
             # beleuchtung aus schalten
             GPIO.output(16, GPIO.LOW)
+            GPIO.output(29, GPIO.LOW)
+            GPIO.output(31, GPIO.LOW)
+            GPIO.output(32, GPIO.LOW)
 
     # stop the thread
     def stop(self):
